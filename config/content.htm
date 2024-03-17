@@ -16,6 +16,9 @@
 <h2>(已解決)小組倉儲無法正常push</h2>
 <p></p>
 <p>從上週mdecycu的2次commit後(如圖一)，組員的push開始在build時就失敗(如圖二圖三)，導致網站無法正常更新。</p>
+<p>原因:小組組員用ssh將倉儲git clone時發生錯誤，導致該組員的子模組沒有清除乾淨，影響到倉儲轉Github Pages</p>
+<p>解決辦法:把多餘的子模組刪除<img alt="" height="126" src="/images/repository4.png" width="554"/></p>
+<p></p>
 <p>(圖一)小組倉儲commits</p>
 <p><img alt="" height="363" src="/images/repository1.png" width="520"/></p>
 <p>(圖二)check fail</p>
