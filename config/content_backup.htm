@@ -9,6 +9,7 @@
 <p style="padding-left: 30px;"><a href="https://github.com/mdecycu/cmsimde_site">https://github.com/mdecycu/cmsimde_site</a></p>
 <p style="padding-left: 30px;">此 Template 將 cmsimde 作為子目錄而非子模組, 使用者可以依照需求自行修改</p>
 <p style="padding-left: 30px;">倉儲對應網站: <a href="https://mde.tw/cmsimde_site">https://mde.tw/cmsimde_site</a></p>
+<h1>week</h1>
 <h1>work</h1>
 <h2>w6</h2>
 <h3>Git ChatGPT</h3>
@@ -117,7 +118,51 @@
 <p>並且取出其URL: <a href="https://gist.githubusercontent.com/40823238/cc863ec47f3362791ca01a10ecd5e786/raw/2a586f54076df00d5b1e846c550954a8a4089e7e/40823238_w10_step1.py">gist.githubusercontent.com/40823238/cc863ec47f3362791ca01a10ecd5e786/raw/2a586f54076df00d5b1e846c550954a8a4089e7e/40823238_w10_step1.py</a></p>
 <p>接著到Brython頁面的網址後加 ?src=URL</p>
 <p>就可在<a href="https://40823238.github.io/wcm2024/content/Brython.html?src=https://gist.githubusercontent.com/40823238/cc863ec47f3362791ca01a10ecd5e786/raw/2a586f54076df00d5b1e846c550954a8a4089e7e/40823238_w10_step1.py">頁面</a>中運行程式</p>
-<p></p><h1>Video</h1>
+<pre class="brush:py;auto-links:false;toolbar:false" contenteditable="false">from browser import window, ajax
+  
+def fetch_csv_data():
+  # CSV 檔案網址
+  url = "https://mdewcm2024.github.io/1astud-site/downloads/1a.txt"
+  
+  def on_complete(req):
+    if req.status == 200 or req.status == 0:
+      # 讀取 CSV 檔案內容
+      content = req.text
+  
+      # 依照換行符號拆分資料
+      lines = content.split('\n')
+  
+      # 建立空列表儲存資料
+      data = []
+  
+      # 遍歷每一行資料
+      for line in lines:
+        # 忽略空白行
+        if line.strip() == "":
+          continue
+  
+        # 依照逗號拆分資料
+        items = line.split(',')
+  
+        # 將拆分後的資料加入列表
+        data.append(items)
+  
+      # 印出結果
+      print(data)
+    else:
+      print("Error:", req.text)
+  
+  # 發送 AJAX 請求
+  req = ajax.ajax()
+  req.bind('complete', on_complete)
+  req.open('GET', url, True)
+  req.set_header('content-type', 'application/x-www-form-urlencoded')
+  req.send()
+  
+# 呼叫函式讀取 CSV 資料
+fetch_csv_data()</pre>
+<p><br/><br/></p>
+<h1>Video</h1>
 <p>這是本系畢業生陳致文<a href="https://github.com/40823218">40823218 (github.com)</a>的AI作品</p>
 <p>他本人日前已前往日本深造</p>
 <p>期待他一年後學成歸國後給我們帶來更多作品</p>
