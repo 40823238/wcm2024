@@ -31,6 +31,8 @@
 <p>w14</p>
 <p>AI猜數字</p>
 <p>w15</p>
+<p>決定期末專案主題</p>
+<p></p>
 <p></p>
 <p></p>
 <h1>work</h1>
@@ -186,7 +188,201 @@ def fetch_csv_data():
 fetch_csv_data()</pre>
 <h2>1astud-site</h2>
 <p style="text-align: left;"><span>40823238 心得</span></p>
-<p style="text-align: left;"><span>這是我睽違兩年再次上github相關的課程，與之前相比，github多了很多方便的功能，其中最有感的是codespace，他不僅取代了可攜式系統，還讓操作更直觀，更重要的是不會占太多儲存空間。讓一些操作可以更快執行。</span></p><h1>Video</h1>
+<p style="text-align: left;"><span>這是我睽違兩年再次上github相關的課程，與之前相比，github多了很多方便的功能，其中最有感的是codespace，他不僅取代了可攜式系統，還讓操作更直觀，更重要的是不會占太多儲存空間。讓一些操作可以更快執行。</span></p>
+<h2>期末專案</h2>
+<p>打磚塊小遊戲</p>
+<p><img alt="" height="319" src="/images/brick.png" width="479"/></p>
+<pre class="brush:html;auto-links:false;toolbar:false" contenteditable="false">&lt;!doctype html&gt;
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;meta charset="utf-8" /&gt;
+    &lt;title&gt;Gamedev Canvas Workshop&lt;/title&gt;
+    &lt;style&gt;
+      * {
+        padding: 0;
+        margin: 0;
+      }
+      canvas {
+        background: #eee;
+        display: block;
+        margin: 0 auto;
+      }
+    &lt;/style&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;canvas id="myCanvas" width="480" height="320"&gt;&lt;/canvas&gt;
+
+    &lt;script&gt;
+      var canvas = document.getElementById("myCanvas");
+var ctx = canvas.getContext("2d");
+var ballRadius = 10;
+var x = canvas.width/2;
+var y = canvas.height-30;
+var dx = 2;
+var dy = -2;
+var paddleHeight = 10;
+var paddleWidth = 75;
+var paddleX = (canvas.width-paddleWidth)/2;
+var rightPressed = false;
+var leftPressed = false;
+var brickRowCount = 5;
+var brickColumnCount = 3;
+var brickWidth = 75;
+var brickHeight = 20;
+var brickPadding = 10;
+var brickOffsetTop = 30;
+var brickOffsetLeft = 30;
+var score = 0;
+var lives = 3;
+
+var bricks = [];
+for(var c=0; c&lt;brickColumnCount; c++) {
+  bricks[c] = [];
+  for(var r=0; r&lt;brickRowCount; r++) {
+    bricks[c][r] = { x: 0, y: 0, status: 1 };
+  }
+}
+
+document.addEventListener("keydown", keyDownHandler, false);
+document.addEventListener("keyup", keyUpHandler, false);
+document.addEventListener("mousemove", mouseMoveHandler, false);
+
+function keyDownHandler(e) {
+    if(e.key == "Right" || e.key == "ArrowRight") {
+        rightPressed = true;
+    }
+    else if(e.key == "Left" || e.key == "ArrowLeft") {
+        leftPressed = true;
+    }
+}
+
+function keyUpHandler(e) {
+    if(e.key == "Right" || e.key == "ArrowRight") {
+        rightPressed = false;
+    }
+    else if(e.key == "Left" || e.key == "ArrowLeft") {
+        leftPressed = false;
+    }
+}
+
+function mouseMoveHandler(e) {
+  var relativeX = e.clientX - canvas.offsetLeft;
+  if(relativeX &gt; 0 &amp;&amp; relativeX &lt; canvas.width) {
+    paddleX = relativeX - paddleWidth/2;
+  }
+}
+function collisionDetection() {
+  for(var c=0; c&lt;brickColumnCount; c++) {
+    for(var r=0; r&lt;brickRowCount; r++) {
+      var b = bricks[c][r];
+      if(b.status == 1) {
+        if(x &gt; b.x &amp;&amp; x &lt; b.x+brickWidth &amp;&amp; y &gt; b.y &amp;&amp; y &lt; b.y+brickHeight) {
+          dy = -dy;
+          b.status = 0;
+          score++;
+          if(score == brickRowCount*brickColumnCount) {
+            alert("YOU WIN, CONGRATS!");
+            document.location.reload();
+          }
+        }
+      }
+    }
+  }
+}
+
+function drawBall() {
+  ctx.beginPath();
+  ctx.arc(x, y, ballRadius, 0, Math.PI*2);
+  ctx.fillStyle = "#0095DD";
+  ctx.fill();
+  ctx.closePath();
+}
+function drawPaddle() {
+  ctx.beginPath();
+  ctx.rect(paddleX, canvas.height-paddleHeight, paddleWidth, paddleHeight);
+  ctx.fillStyle = "#0095DD";
+  ctx.fill();
+  ctx.closePath();
+}
+function drawBricks() {
+  for(var c=0; c&lt;brickColumnCount; c++) {
+    for(var r=0; r&lt;brickRowCount; r++) {
+      if(bricks[c][r].status == 1) {
+        var brickX = (r*(brickWidth+brickPadding))+brickOffsetLeft;
+        var brickY = (c*(brickHeight+brickPadding))+brickOffsetTop;
+        bricks[c][r].x = brickX;
+        bricks[c][r].y = brickY;
+        ctx.beginPath();
+        ctx.rect(brickX, brickY, brickWidth, brickHeight);
+        ctx.fillStyle = "#0095DD";
+        ctx.fill();
+        ctx.closePath();
+      }
+    }
+  }
+}
+function drawScore() {
+  ctx.font = "16px Arial";
+  ctx.fillStyle = "#0095DD";
+  ctx.fillText("Score: "+score, 8, 20);
+}
+function drawLives() {
+  ctx.font = "16px Arial";
+  ctx.fillStyle = "#0095DD";
+  ctx.fillText("Lives: "+lives, canvas.width-65, 20);
+}
+
+function draw() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  drawBricks();
+  drawBall();
+  drawPaddle();
+  drawScore();
+  drawLives();
+  collisionDetection();
+
+  if(x + dx &gt; canvas.width-ballRadius || x + dx &lt; ballRadius) {
+    dx = -dx;
+  }
+  if(y + dy &lt; ballRadius) {
+    dy = -dy;
+  }
+  else if(y + dy &gt; canvas.height-ballRadius) {
+    if(x &gt; paddleX &amp;&amp; x &lt; paddleX + paddleWidth) {
+      dy = -dy;
+    }
+    else {
+      lives--;
+      if(!lives) {
+        alert("GAME OVER");
+        document.location.reload();
+      }
+      else {
+        x = canvas.width/2;
+        y = canvas.height-30;
+        dx = 3;
+        dy = -3;
+        paddleX = (canvas.width-paddleWidth)/2;
+      }
+    }
+  }
+
+  if(rightPressed &amp;&amp; paddleX &lt; canvas.width-paddleWidth) {
+    paddleX += 7;
+  }
+  else if(leftPressed &amp;&amp; paddleX &gt; 0) {
+    paddleX -= 7;
+  }
+
+  x += dx;
+  y += dy;
+  requestAnimationFrame(draw);
+}
+
+draw();
+    &lt;/script&gt;
+  &lt;/body&gt;</pre>
+<p></p><h1>Video</h1>
 <p>這是本系畢業生陳致文<a href="https://github.com/40823218">40823218 (github.com)</a>的AI作品</p>
 <p>他本人日前已前往日本深造</p>
 <p>期待他一年後學成歸國後給我們帶來更多作品</p>
@@ -527,3 +723,6 @@ doc["threejsblock"].bind("click", threejsblock.do)
 <p>
 <script src="https://unpkg.com/three@0.144.0/build/three.js" type="text/javascript"></script>
 </p>
+<div id="gtx-trans" style="position: absolute; left: -5px; top: 3783.42px;">
+<div class="gtx-trans-icon"></div>
+</div>
